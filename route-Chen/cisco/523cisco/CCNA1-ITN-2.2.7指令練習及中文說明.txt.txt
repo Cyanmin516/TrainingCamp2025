@@ -1,0 +1,71 @@
+CCNA1-ITN-2.2.7絤策のいゅ弧
+
+ㄏノ enable ㏑秈疭舦EXEC家Α
+(Enter privileged EXEC mode using the enable command.)
+
+Switch>enable
+
+ㄏノ disable ㏑ノめEXEC家Α
+(Return to user EXEC mode using the disable command.)
+
+Switch#disable
+
+穝秈疭舦磅︽家Α
+(Re-enter privileged EXEC mode.)
+
+Switch>enable
+
+ㄏノ configure terminal ㏑秈办砞﹚家Α
+(Enter global configuration mode using the configure terminal command.)
+
+Switch#configure terminal
+
+癶办砞﹚家Αㄏノ exit ㏑疭舦EXEC家Α
+(Exit global configuration mode and return to privileged EXEC mode using the exit command.)
+
+Switch(config)#exit
+
+穝秈办砞﹚家Α
+(re-enter global configuration mode.)
+
+Switch#configure terminal
+
+ㄏノ line console 0 秈北硈絬絬隔砞﹚家Α
+(Enter line subconfiguration mode for the console port using the line console 0 command.)
+
+Switch(config)#line console 0
+
+ㄏノ exit 办砞﹚家Α
+(Return to global configuration mode using the exit command.)
+
+Switch(config-line)#exit
+
+ㄏノ line vty 0 15 秈VTY絬隔砞﹚家Α
+(Enter VTY line subconfiguration mode using the line vty 0 15 command.)
+
+
+Switch(config)#line vty 0 15
+
+办砞﹚家Α
+(Return to global configuration mode.)
+
+Switch(config-line)#exit
+
+ㄏノ interface vlan 1 ㏑秈VLAN 1ざ砞﹚家Α
+(Enter the VLAN 1 interface subconfiguration mode using the interface vlan 1 command.)
+
+Switch(config)#interface vlan 1
+
+眖ざ砞﹚家Αㄏノ line console 0 办砞﹚㏑ち传北硈絬砞﹚家Α
+(From interface configuration mode, switch to line console subconfiguration mode using the line console 0 global configuration command.)
+
+
+Switch(config-if)#line console 0
+
+ㄏノ end 疭舦EXEC家Α
+(Return to privileged EXEC mode using the end command.)
+
+Switch(config-line)#end
+
+眤Θ贺IOS㏑家Αぇ丁ち传籔巨
+(You successfully navigated between the various IOS command line modes.)
