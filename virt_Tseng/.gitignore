@@ -1,8 +1,5 @@
 #Cisco packet tracer samples
-.\route-Chen\cisco\*
 cisco/*
-/route-Chen/cisco/*
-
 
 #pdf file and misc
 else/*
@@ -10,8 +7,13 @@ else/*
 #testfile
 test.md
 
+<<<<<<< .merge_file_0wg4i4
 #orther branches
 lab-interface-Wang/*
+=======
+#other branches
+..\lab-interface-Wang\*
+>>>>>>> .merge_file_lMkK1B
 
 
 

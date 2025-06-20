@@ -1,0 +1,21 @@
+
+# push branch
+git push --set-upstream origin virt_Tseng
+git push -u origin lab-interface-Wang
+
+# pull request remote merge collision
+git branch --set-upstream-to=origin/main main
+git pull --set-upstream origin main
+git pull
+
+# merge without push branch
+git switch main
+git merge security-Hung
+git push origin main
+
+# not commit and switch branch , have worng atrack file 
+git restore --staged file.md
+
+
+#remove file tracking 
+git rm -r --cached filename
