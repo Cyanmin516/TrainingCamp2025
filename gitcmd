@@ -19,3 +19,7 @@ git restore --staged file.md
 
 #remove file tracking 
 git rm -r --cached filename
+
+#merge branch 
+git checkout <your_target_branch> # e.g., git checkout main or git checkout develop
+git merge feature-branch-1 feature-branch-2 feature-branch-3
