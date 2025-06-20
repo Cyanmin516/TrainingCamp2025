@@ -1,6 +1,8 @@
 #Cisco packet tracer samples
 .\route-Chen\cisco\*
 cisco/*
+/route-Chen/cisco/*
+
 
 #pdf file and misc
 else/*
