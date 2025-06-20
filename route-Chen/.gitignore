@@ -2,10 +2,15 @@
 /cisco/*
 /route-Chen/cisco/*
 
-
-
-
 #ignore other branch
-/lab-interface-Wang/
+/lab-interface-Wang/*
+..\lab-interface-Wang\*
 
+/virt_Tseng/
+..\virt_Tseng\
 
+/security-Hung/
+..\securit-Hung\
+
+/OS-Huang/
+..\OS-Huang\
