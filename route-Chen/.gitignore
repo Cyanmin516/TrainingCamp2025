@@ -1,5 +1,8 @@
 #cisco file ignore
-cisco/*
+/cisco/*
+/route-Chen/cisco/*
+
+
 
 
 
