@@ -23,3 +23,5 @@ git rm -r --cached filename
 #merge branch 
 git checkout <your_target_branch> # e.g., git checkout main or git checkout develop
 git merge feature-branch-1 feature-branch-2 feature-branch-3
+
+當你想改變你正在工作的分支，讓你的工作目錄反映那個分支的內容時，就用 git checkout (或 git switch)。如果你使用的是較新的 Git 版本，推薦使用 git switch 來進行分支的創建和切換，讓 git checkout 專門用於恢復檔案。
