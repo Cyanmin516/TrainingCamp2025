@@ -28,3 +28,9 @@ git merge feature-branch-1 feature-branch-2 feature-branch-3
 
 #gir rm --cached
 搭配 .gitignore 使用：先用 git rm --cached 移除，再把該檔案加入 .gitignore，讓 Git 之後忽略它。
+
+#git checkout main
+#git pull main
+#git checkout branch
+#git merge main
+將main 狀態更新到 branch
