@@ -34,3 +34,16 @@ git merge feature-branch-1 feature-branch-2 feature-branch-3
 #git checkout branch
 #git merge main
 將main 狀態更新到 branch
+
+
+git-stash - Stash the changes in a dirty working directory away
+1. Stash the changes from the wrong branch:
+git stash push -m "Accidental work on wrong branch"
+2. Switch to the correct branch:
+git checkout your-correct-branch
+3. Apply and remove the stashed changes:
+git stash pop
+
+
+
+
