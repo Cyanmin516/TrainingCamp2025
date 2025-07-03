@@ -1,7 +1,5 @@
-#Cisco packet tracer samples
-.\route-Chen\cisco\*
-cisco/*
-/route-Chen/cisco/*
+#Cisco packet tracer samples 
+route-Chen/cisco/*
 
 
 #pdf file and misc
@@ -9,9 +7,6 @@ else/*
 
 #testfile
 test.md
-
-#orther branches
-lab-interface-Wang/*
 
 
 
