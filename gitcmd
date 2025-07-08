@@ -30,19 +30,19 @@ git merge feature-branch-1 feature-branch-2 feature-branch-3
 搭配 .gitignore 使用：先用 git rm --cached 移除，再把該檔案加入 .gitignore，讓 Git 之後忽略它。
 
 #git checkout main
-#git pull main
+#git pull origin main 
 #git checkout branch
 #git merge main
 將main 狀態更新到 branch
 
 
-git-stash - Stash the changes in a dirty working directory away
+#git-stash - Stash the changes in a dirty working directory away
 1. Stash the changes from the wrong branch:
-git stash push -m "Accidental work on wrong branch"
+    git stash push -m "Accidental work on wrong branch"
 2. Switch to the correct branch:
-git checkout your-correct-branch
+    git checkout your-correct-branch
 3. Apply and remove the stashed changes:
-git stash pop
+    git stash pop
 
 
 

@@ -6,6 +6,9 @@
 2. linux-Cheng 作業系統
     * bash command
 3. OS-Huang 伺服器作業系統
+    * server NTFS
+    * File Server share data space
+    * DS member group policy
 4. route-Chen 網路與路由
     * 網路理論
     * 思科設備模擬操作
@@ -14,4 +17,5 @@
 5. security-Hung 網路安全
     * 公開平台CVE、TWCERT
 6. server-Chi 
+    * Linux base and bash
 7. virt_Tseng
