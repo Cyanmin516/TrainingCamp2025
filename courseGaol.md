@@ -5,6 +5,7 @@
     * 網路接點、C型端子版
 2. linux-Cheng 作業系統
     * bash command
+    * 電腦拆裝
 3. OS-Huang 伺服器作業系統
     * server NTFS
     * File Server share data space
@@ -19,3 +20,7 @@
 6. server-Chi 
     * Linux base and bash
 7. virt_Tseng
+    * vmware base
+    * skip TPM
+    * 電腦五大資源(CPU、RAM、STORAGE、NETWORK、GPU)
+8. 
