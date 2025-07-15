@@ -1,18 +1,5 @@
 #cisco file ignore
-/cisco/*
-/route-Chen/cisco/*
+cisco/* 
 
-#ignore other branch
-/lab-interface-Wang/*
-..\lab-interface-Wang\*
-/lab-interface-Wang/0616.md
-
-
-/virt_Tseng/
-..\virt_Tseng\
-
-/security-Hung/
-..\securit-Hung\
-
-/OS-Huang/
-..\OS-Huang\
+#exam note
+#CCNA1exam/*
