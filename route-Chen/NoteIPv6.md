@@ -4,7 +4,7 @@
 - 名詞區分
 - DHCP運作
 
-#IPv6 #GUA #LLA #SLAAC #DHCPv6
+#IPv6 #GUA #LLA #SLAAC #DHCPv6 #multicast
 ## 1. 傳播方法
 * unicast - 外部IP
 * multicast - 群播、多播
