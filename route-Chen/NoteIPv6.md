@@ -18,7 +18,9 @@ GUA and  LLA. GUA is global, and LLA is local.
 * **LLA:** 
     * 定義: An IPv6 link-local address (LLA) enables a device to communicate with other IPv6-enabled devices on the same link and only on that link (subnet).
     * 實務: IPv6 LLAs are in the `fe80::/10` range. The /10 indicates that the first 10 bits are 1111 1110 10xx xxxx. The first hextet has a range of 1111 1110 1000 0000 (fe80) to 1111 1110 1011 1111 (febf). end febf::/10
-
+* **self-ping**
+    * 定義:selft test ip `::1/128`
+    
 ## 3. Router and DHCP
 Client sent RS to DHCPv6 and recieve RA.
 * **RA** : The ICMPv6 RA message includes the following:
