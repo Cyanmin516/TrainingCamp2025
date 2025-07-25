@@ -1,7 +1,7 @@
 課程目標
 1. lab-interface-Wang 通訊實務技術
     * 纜線基本認知
-    * 弱電工具
+    * 弱電工具dd
     * 網路接點、C型端子版
 2. linux-Cheng 作業系統
     * bash command
