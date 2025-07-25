@@ -10,6 +10,7 @@
     * server NTFS
     * File Server share data space
     * DS member group policy
+    * services(AD DS, data base, web, DHCP)
 4. route-Chen 網路與路由
     * 網路理論
     * 思科設備模擬操作
@@ -21,6 +22,6 @@
     * Linux base and bash
 7. virt_Tseng
     * vmware base
-    * skip TPM
+    * IT base skill(備份流程, 權限設定, 資訊安全, 系統最佳化)
     * 電腦五大資源(CPU、RAM、STORAGE、NETWORK、GPU)
 8. 
