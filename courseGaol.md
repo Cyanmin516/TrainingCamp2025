@@ -11,11 +11,14 @@
     * File Server share data space
     * DS member group policy
     * services(AD DS, data base, web, DHCP)
+    * limit IP from, limit proxy
 4. route-Chen 網路與路由
-    * 網路理論
-    * 思科設備模擬操作
+    * 網路理論、思科設備模擬操作    * 
     * 網路環境檢測
     * 子網路分割
+    * 備援系統救援
+    * 設備生命週期
+    * 限制存取網站、人員
 5. security-Hung 網路安全
     * 公開平台CVE、TWCERT
 6. server-Chi 

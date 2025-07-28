@@ -29,4 +29,4 @@ Keywords just type prefix only.
 |`ip a *ip *mask`|ip address 127.0.0.1 255.255.255.0|
 |`do show r`|in interface but wantting showing the setting of interface|
 |`wr`|copy running-config startup-config|
-
+|`do sh ru`|do show running-config|
