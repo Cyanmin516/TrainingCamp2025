@@ -30,3 +30,27 @@ Keywords just type prefix only.
 |`do show r`|in interface but wantting showing the setting of interface|
 |`wr`|copy running-config startup-config|
 |`do sh ru`|do show running-config|
+|`sh ip int b`|show ip interface brief|
+
+
+
+|who|shorts|origins|
+|:-|:-|:-|
+|RTA(config)#|`h RTA`|hostname RTA| 
+
+
+## show option with | 
+1. four keyworkds section, include, exclude, begin
+
+make sure with space at front and back `cmd1 | cmd2`
+>sh r|section interface is not working
+> sh r | s int is OK
+
+#failed
+
+2. multi keyworks
+pipeline with space split commands, but connect with mutli-words
+>#sh r | s int|line
+`cmd1 | cmd2.1|2.2`
+
+

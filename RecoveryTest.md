@@ -7,4 +7,4 @@ log 7/14
 |log|date|
 |:-|:-|
 |markdown table|7.18|
- 
+|this note writed|7.30|
