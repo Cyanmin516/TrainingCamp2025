@@ -1,5 +1,6 @@
 # Vlan
 VLAN 透過 Trunk 技術，完美地實現了「**邏輯隔離**」與「**實體線路共用**」這兩個看似矛盾的目標。這也是 VLAN 在現代企業網路中如此重要的原因。 
+第三層交換器，在單純環境下(全部線路都乙太網路)能夠安裝加速晶片，更能處理大量跨網段封包。
 
 ## define
 VLANs are created at Layer 2 to reducing or eliminate **broadcast** traffic.
