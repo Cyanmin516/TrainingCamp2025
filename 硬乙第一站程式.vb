@@ -1,15 +1,15 @@
 Public Class Form1
-    Dim color, greenQ(16), redQ(9), gi, ri As Integer
+    Dim colorL, greenQ(16), redQ(9), gi, ri As Integer
  
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        color = 1
+        colorL = 1
         ri = 0
 
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        color = 2
+        colorL = 2
         gi = 0
     End Sub
 
@@ -44,12 +44,12 @@ Public Class Form1
             Next
             For i = 0 To 10 ^ 8
             Next
-            If color = 1 And redQ(ri) > 0 Then
+            If colorL = 1 And redQ(ri) > 0 Then
                 SerialPort1.Write("R" & redQ(ri))
                 Display(redQ(ri))
                 ri += 1
             End If
-            If color = 2 And greenQ(gi) > 0 Then
+            If colorL = 2 And greenQ(gi) > 0 Then
                 SerialPort1.Write("G" & greenQ(gi))
                 Display(greenQ(gi))
                 gi += 1
@@ -67,8 +67,8 @@ Public Class Form1
     Private Sub Display(ByVal no)
         Dim s = ShapeContainer1.Shapes
         For i = 0 To 7
-            If no Mod 2 = 1 And color = 1 Then s(i).fillcolor = Color.Red
-            If no Mod 2 = 1 And color = 2 Then s(i + 8).fillcolor = Color.GreenYellow
+            If no Mod 2 = 1 And colorL = 1 Then s(i).fillcolor = Color.Red
+            If no Mod 2 = 1 And colorL = 2 Then s(i + 8).fillcolor = Color.GreenYellow
             no \= 2
         Next
     End Sub
