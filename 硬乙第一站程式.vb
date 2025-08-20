@@ -4,6 +4,7 @@ Public Class Form1
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         ledColor = 1
         redIndex = 0
+
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
@@ -14,17 +15,18 @@ Public Class Form1
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         SerialPort1.Close()
         End
+
     End Sub
 
     Private Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         If SerialPort1.IsOpen Then
             LedOff()
-            Button4.Text = "Disconnect Bluetooth"
+            Button4.Text = "Connnect Bluetooth"
             SerialPort1.Close()
         Else
             SerialPort1.Open()
             LedOff()
-            Button4.Text = "Connnect Bluetooth"
+            Button4.Text = "Disconnect Bluetooth"
         End If
     End Sub
 
@@ -57,12 +59,10 @@ Public Class Form1
             Next
         End If 
     End Sub
-
     Private Sub LedOff()
         SerialPort1.Write("R0")
         SerialPort1.Write("G0")
     End Sub
-
     Private Sub Display(ByVal ledColor, ByVal no)
         Dim s = ShapeContainer1.Shapes
         For i = 0 To 7
@@ -71,5 +71,4 @@ Public Class Form1
             no \= 2
         Next
     End Sub
-    
 End Class
