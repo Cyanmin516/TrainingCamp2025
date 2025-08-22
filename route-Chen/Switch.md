@@ -9,8 +9,9 @@
 4. trunk, native vlan, nonegotiate, encapsulation
 5. access, vlan id
 6. layer3 port, no switchport
-7. OSPF
 8. channel-group, port-channel
+9. port-security
+
 
 ### 0 Switch basic commands
 ```
@@ -99,6 +100,32 @@ S1(config)# spanning-tree vlan 1 priority 24576
 
 S1#show etherchannel summary
 S1#show spanning-tree active
+```
+
+### sample port-security
+
+**在介面中設定安全連線埠**
+```
+interface fa0/5
+switchport mode access
+啟用安全埠
+switchport port-security
+設定最大連線數量
+switchport port-security maximum 3
+靜態設定
+switchport port-security mac-address aaa.bbbb.1234
+動態學習
+switchport port-security mac-address stich
+```
+
+**驗證**
+```
+統計
+show port-security
+個別介面
+show port-security interface fa0/5
+列出所有PORT
+show port-securtiy address
 ```
 
 
