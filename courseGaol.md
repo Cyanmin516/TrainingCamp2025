@@ -20,7 +20,7 @@
 
    **Switch**
    * vlan
-   * DUP
+   * DTP
    * gorup-channel
    * STP
    * security
