@@ -36,6 +36,5 @@
 # security 網路安全
    * 公開平台CVE、TWCERT
    * AAA
-   * CVE
    * ISO 文件化管理
 

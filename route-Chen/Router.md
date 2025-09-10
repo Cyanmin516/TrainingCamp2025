@@ -124,6 +124,42 @@ R1(config)# interface g0/0/0
 R1(config-if)# ip helper-address 192.168.11.6
 ```
 
+4. port with vlan on-side-route
+```
+R1(config)# interface G0/0/1.10
+R1(config-subif)# description Default Gateway for VLAN 10
+R1(config-subif)# encapsulation dot1Q 10
+R1(config-subif)# ip add 192.168.10.1 255.255.255.0
+R1(config-subif)# exit
+R1(config)#
+R1(config)# interface G0/0/1.20
+R1(config-subif)# description Default Gateway for VLAN 20
+R1(config-subif)# encapsulation dot1Q 20
+R1(config-subif)# ip add 192.168.20.1 255.255.255.0
+R1(config-subif)# exit
+R1(config)#
+R1(config)# interface G0/0/1.99
+R1(config-subif)# description Default Gateway for VLAN 99
+R1(config-subif)# encapsulation dot1Q 99
+R1(config-subif)# ip add 192.168.99.1 255.255.255.0
+R1(config-subif)# exit
+R1(config)#
+R1(config)# interface G0/0/1
+R1(config-if)# description Trunk link to S1
+R1(config-if)# no shut
+R1(config-if)# end
+R1#
+*Sep 15 19:08:47.015: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/1, changed state to down
+*Sep 15 19:08:50.071: %LINK-3-UPDOWN: Interface GigabitEthernet0/0/1, changed state to up
+*Sep 15 19:08:51.071: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to up
+
+檢查
+show ip route
+show ip interface brief
+show interfaces
+show interfaces trunk
+```
+
 
 ## HSRP
 路由器備援
@@ -135,6 +171,8 @@ R1(config-if)#standby 1 ip  192.168.1.254
 R1(config-if)#standby 1 priority 150
 R1(config-if)#standby 1 preempt 
 R1(config-if)#end
+
+檢查
 R1#show standby 
 R1#show standby brief
 ```

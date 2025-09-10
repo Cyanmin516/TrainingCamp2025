@@ -6,14 +6,17 @@
 - ftp upload/download startup-config, vlan, iso.bin
 1. vlan ip, default-gateway
 2. vlan id, name, native, voice 
-4. trunk, native vlan, nonegotiate, encapsulation
+4. trunk, native vlan, nonegotiate, encapsulation(route port vlan), 
+a. trunk mode dynamic, auto, des
 5. access, vlan id
 6. layer3 port, no switchport
+7. LACP and root switch
 8. channel-group, port-channel
 9. **port-security**
 10. dhcp snooping
 11. arp inspection
 12. PortFast and BPDU guard
+13. 故障排查
 
 ### 0 Switch basic commands
 ```
@@ -55,10 +58,16 @@ S1# show running-config
 
 ```
 
-### 4 sample
+### 4 sample trunk
 ```
-
-
+S1(config)# interface fa0/1
+S1(config-if)# switchport mode trunk
+S1(config-if)# no shut
+S1(config-if)# exit
+S1(config)# interface fa0/5
+S1(config-if)# switchport mode trunk
+S1(config-if)# no shut
+S1(config-if)# end
 ```
 
 ### 5 sample
@@ -198,3 +207,26 @@ S1(config)# exit
 ```
 show spanning-tree summary
 ```
+### 13. sample 故障排查
+使用 `show interfaces trunk` 的主要目的
+查看 Native VLAN 設定（To view the native VLAN）
+
+這個命令會顯示：
+
+哪些介面是 trunk port
+
+每個 trunk port 的 native VLAN
+
+允許通過 trunk 的 VLAN 範圍
+
+Trunk 模式（例如 IEEE 802.1Q）
+
+這對於排除 VLAN 傳輸問題、確認 trunk 配置是否一致非常重要。
+
+錯誤或不完全正確的選項解析
+To examine DTP negotiation as it occurs DTP（Dynamic Trunking Protocol）相關資訊需使用 `show dtp interface` 命令，並非 show interfaces trunk。
+
+To verify port association with a particular VLAN 若要查看某個 port 屬於哪個 VLAN，應使用 `show vlan brief` 或 show interfaces switchport。
+
+To display an IP address for any existing VLAN VLAN 本身的 IP 設定通常透過 `show ip interface brief` 或 show running-config 來查看，與 trunk 無直接關係。
+
