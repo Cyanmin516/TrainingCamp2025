@@ -44,6 +44,15 @@ git merge feature-branch-1 feature-branch-2 feature-branch-3
 3. Apply and remove the stashed changes:
     git stash pop
 
+# git .gitignore to branch
+git status 
+// where u are, if not go next
+git checkout <yourbranch-name>
+git checkout main -- .gitignore
+git status
+git add .gitignore
+git commit -m "Merge .gitignore from main"
+
 
 
 
