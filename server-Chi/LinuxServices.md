@@ -1,20 +1,47 @@
-# Linux Network Setting
-- speacher: pro.Chi
-- date: 2025-9-12
-- class 7
-- vbird Chapter 12
-- vbird Linux server 1
+Linux Servies
+1. IP
+2. FTP
+3. DNS
+4. 套件管理
 
-#DNS #yum_repo #TAG
 
-## DNS
 
-```bash
-dnf -y install bind bind-chroot bind-utils
+## 3. sample of DNS
+```sh
+#vim /etc/named.conf
+listen-on port 53 {`ip;` 127.0.0.1;};
+註解IPv6, `//listen-on-v6`
+allow-query {`IP.0/24;` localhost;}; #一個網段
+incldue "/etc/named/student.conf"; #las line
+:wq
 
+#vim /etc/named/student.conf
+zone "studentX.example.com" IN{
+    type master;
+    file "/var/named/student.zone";
+};
+
+#vim /var/named/student.zone 
+$TTL 10
+@   IN SOA dns.studentX.example.com. root ( ;註解用分號 @為本地 dns最後要加.
+    2025001 ;serial number
+    1H 
+    2D ;try again backoff
+    3W ;try until
+    10 ;life time
+)
+
+@   IN NS dns.studentX.com.
+
+
+systemctl enable --now named
+firewall-cmd --add-service=dns
+firewall-cmd --add-service=dns --permanent
+dig 
 ```
 
-## 修改mirror 站點
+
+## 4. sample of 套件
 ```sh
 cd /etc/yum.repos.d/
 vim centos.repo
@@ -54,42 +81,3 @@ yum clean all
 dnf -y install bind bind-chroot bind-utils
 
 ```
- 
- ## dns
-```sh 
- vim named.conf
-### IN VIM
-optoin
-    listen-on port 53 {IP; 127.0.0.1}
-    allow-query {IP/24; localhost}
-:wq
-### END VIM
-
-systemctl enable --now named
-firewall-cmd --add-service=dns
-firewall-cmd --add-service=dns --permanent
-
-#check out port 53
-ss -nlp | grep ":53"
-```
-
-
-
-
-
-
-
-
- ## 視窗最大最小化
- - 概覽
- - 設定
- - 程式集
- - 調教 gnome
- - 安裝
- - 視窗標題欄
- - 最大化、最小化:開啟
- - VM重啟
-
- ```sh
- dnf install gnome-tweaks
- ```
