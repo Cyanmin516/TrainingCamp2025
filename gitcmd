@@ -54,5 +54,8 @@ git add .gitignore
 git commit -m "Merge .gitignore from main"
 
 
-
+git restore --source=HEAD --staged --worktree # 復原main
+git checkout --ours <file>   # 保留 main 的版本
+git checkout --theirs <file> # 接受 branch 的版本（可能是刪除）
+#找不到
 
