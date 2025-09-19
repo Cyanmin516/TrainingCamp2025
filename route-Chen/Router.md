@@ -6,6 +6,8 @@
 - port[vlan id], encapsulation dot1Q [vlan id]
 - dhcp
 - 備援
+- 路由表 優先權
+
 
 ## switch and router command security
 明文密碼在running-config
@@ -179,6 +181,63 @@ R1#show standby brief
 
 
 
+## 管理距離 Administrative Distance
+路由表優先權，數值小優先
+
+| 協定 | 優先權| 
+|:-|:-|
+| 內部EIGRP | 90 |
+| OSPF | 110 |
+| RIP | 120 |
+| 直連 | 0 |
+| 手動設定 | 1 |
+
+**靜態路由**
+```sh
+ipv6 unicast-routing
+ipv6 route 2001:db8:acad:8::/64  2001:db8:acad:8::1
+
+ip route 172.16.1.0 255.255.255.0 GigabitEthernet 0/0/0
+不會有度量值
+不顯示靜態路由
+
+ipv6 route 2001:db8:acad:1::/64 s0/1/0
+S   2001:DB8:ACAD:1::/64 [1/0]
+     via Serial0/1/0, directly connected
+
+
+ip route <ip> <mask> <interface> <next ip>
+ipv6 route <ip/len> <interface> <link-local>
+```
+
+**預設路由**
+```sh
+ip route 0.0.0.0 0.0.0.0 { ip | interface }
+每個IPv6一定要綁定介面所以不用設定
+ipv6 rout ::/0 { ip }
+
+```
+
+**浮動靜態路由** : 更改度量值，數值小優先，讓備援通道接續工作
+[AD協定方式/度量值]
+```sh
+R(config)# 
+ip route 0.0.0.0 0.0.0.0 172.16.2.2 2
+ip route 0.0.0.0 0.0.0.0 10.10.10.2 5
+ipv6 route ::/0 2001:DB8:CAFE:2::1
+ipv6 route ::/0 2001:DB8:breed:3::10 5
+R#
+show ip route
+show ipv6 route
+```
+路由表僅顯示最優先介面IP,備援的隱藏
+
+
+對照順序
+1. 只看目的地IP/network
+2. 遮罩**最長**
+3. AD值**最小**
+4. 度量值**最小**
 
 
 
