@@ -39,36 +39,42 @@ target= server
 
 - volumn
     - Block device
-        - Edit disc: /dev/sdb/
+        - Edit disc: `/dev/sdb/`
         設定開始與結束範圍 與前一顆間隔50+
         - partition type: physical/raid member
     - Software Raid
-        - raid 0 , 合為一
-        - raid 1, 雙倍份且空間數量為2倍數(取最小)
-        - raid 5, 邏輯備份(3+空間)
-        - raid 10, 先raid 1 後raid 0
-        - spare 被選但不使用
+        - **raid 0** , 合為一
+        - **raid 1**, 雙倍份且空間數量為2倍數(取最小)
+        - **raid 5**, 邏輯備份(3+空間)
+        - **raid 10**, 先raid 1 後raid 0
+        - **spar**e 被選但不使用
     - Volumn Group
-        - /dev/md0 raid磁碟
-        - /dev/sdb1 physical磁碟切割
+        - `/dev/md0` raid磁碟
+        - `/dev/sdb1` physical磁碟切割
         - add VG
-    - target configuration
-        - target IQN >  create 建立標籤
-    - LUN Mapping 
-        - R\W mode(write-thru/wirte-back/read-only)
-            1. write-thru 立刻寫入
-            2. write-bakc 定期寫入
-            3. read-only 僅下載
-        - transport mod
-            1. backio 最快
-            2. filesystem 等待檔案系統
-        - LUM MAP 
+    - iSCSI Targets
+        - target configuration
+            - target IQN >  create 建立標籤
+        - LUN Mapping 
+            - if only one, auto mapping
+            - R\W mode(write-thru/wirte-back/read-only)
+            1. **write-thru** 立刻寫入
+            2. **write-bakc** 定期寫入
+            3. **read-only** 僅下載
+            - transport mod
+            1. **backio** 最快
+            2. **filesystem** 等待檔案系統
+        - Network ACL
+            - change Access the option from **Deny** to **Allow**
+            - **Update**
 
 - system
     - Network Access configuration
         - NAME
-        - IP
+        - Host
         - netmask 255.255.255.255 只限定一台
+        - allow
+    - **Update**
 
 
 client iSCSI啟動器
