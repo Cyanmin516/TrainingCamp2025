@@ -53,6 +53,7 @@ target= server
         - `/dev/sdb1` physical磁碟切割
         - add VG
     - iSCSI Targets
+        前置開啟iSCSI服務
         - target configuration
             - target IQN >  create 建立標籤
         - LUN Mapping 
@@ -67,6 +68,8 @@ target= server
         - Network ACL
             - change Access the option from **Deny** to **Allow**
             - **Update**
+- Services 
+    - iSCSI enable, RUNNING enable
 
 - system
     - Network Access configuration
