@@ -64,5 +64,6 @@ SSH 的基本語法是：
 
 
 old version
-
+```sh
 ssh -l <username> <remoteIP>
+```
