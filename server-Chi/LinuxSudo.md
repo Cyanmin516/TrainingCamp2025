@@ -91,3 +91,27 @@ sudo usermod -aG root your_username
   * **強烈不建議**將使用者加入 `root` 群組，因為這會帶來嚴重資安風險。
 
 您的 Linux 發行版是哪一種？通常 Ubuntu 預設就會有 `sudo` 群組，讓管理變得更方便。
+
+
+
+
+
+查看 所有USERS
+```sh
+cat /etc/passwd
+使用者編號從1000開始
+資料會在/bin/bash
+peter3:x:1001:1001::/home/peter3:/bin/bash
+真正的密碼資訊存在於只有 root 才能存取的 /etc/shadow 檔案中。
+```
+| 檔案/目錄	| 用途 |	舉例 |	優點 |
+|:-|:-|:-|:-|
+| .conf |	單一配置檔，所有設定集中於此 |	httpd.conf |	集中管理，簡單直觀 |
+| .d |	模組化配置目錄，包含多個小配置檔 |	nginx/conf.d/ |	模組化，易於擴展和維護 |
+| d.conf |	一個具體的配置檔案，通常是某個服務的配置模組 |	journald.conf	| 命名慣例，表示屬於某個服務 |
+
+更改 root password
+sudo passwd root
+
+
+
