@@ -7,6 +7,7 @@
 - dhcp
 - 備援
 - 路由表 優先權
+- OSPF
 
 
 ## switch and router command security
@@ -180,8 +181,7 @@ R1#show standby brief
 ```
 
 
-
-## 管理距離 Administrative Distance
+### 管理距離 Administrative Distance
 路由表優先權，數值小優先
 
 | 協定 | 優先權| 
@@ -193,7 +193,7 @@ R1#show standby brief
 | 手動設定 | 1 |
 
 **靜態路由**
-```sh
+```bash
 ipv6 unicast-routing
 ipv6 route 2001:db8:acad:8::/64  2001:db8:acad:8::1
 
@@ -204,18 +204,15 @@ ip route 172.16.1.0 255.255.255.0 GigabitEthernet 0/0/0
 ipv6 route 2001:db8:acad:1::/64 s0/1/0
 S   2001:DB8:ACAD:1::/64 [1/0]
      via Serial0/1/0, directly connected
-
-
 ip route <ip> <mask> <interface> <next ip>
 ipv6 route <ip/len> <interface> <link-local>
 ```
 
 **預設路由**
-```sh
+```bash
 ip route 0.0.0.0 0.0.0.0 { ip | interface }
 每個IPv6一定要綁定介面所以不用設定
 ipv6 rout ::/0 { ip }
-
 ```
 
 **浮動靜態路由** : 更改度量值，數值小優先，讓備援通道接續工作
@@ -232,12 +229,119 @@ show ipv6 route
 ```
 路由表僅顯示最優先介面IP,備援的隱藏
 
-
 對照順序
 1. 只看目的地IP/network
 2. 遮罩**最長**
 3. AD值**最小**
 4. 度量值**最小**
+
+
+## 設定OSPF
+```console
+R(config)# router ospf 10
+R(config-router)# router-id 1.1.1.1
+
+do show ip route
+C 10.1.1.4/30
+L 10.1.1.6/32
+
+指定網段
+R1(config-router)# netwrok 10.1.1.4 0.0.0.3 area 0
+指定IP
+R2(config-router)# network 10.1.1.6 0.0.0.0 area 0
+指定介面
+R3(config)# interface g0/0/0
+R3(config-if)# ip ospf 10 area 0
+關閉末端的OSPF
+R(config-router)# no passive-interface g0/0/0
+show ip protocols
+show ip route
+O IP/mask [110/128] ...
+
+show ip ospf interface g0/0/0
+```
+
+
+### OSPF 優先順序設定
+優先序(0-255)選最高的，預設1，相同優先時選IP最高者
+重新設定DR
+```bash
+show ip ospf interface g0/0/0
+show ip ospf neighbor 
+
+R1(config)# interface G0/0/0
+R1(config-if)# ip ospf priority 255
+
+R2(config)# interface G0/0/0
+R2(config-if)# ip ospf priority 0
+
+R3(config)# interface G0/0/0
+R3(config-if)# ip ospf priority 100
+
+R1# clear ip ospf process
+[no]:y
+R2# clear ip ospf process
+[no]:y
+R3# clear ip ospf process
+[no]:y
+```
+
+
+### 設定OSPF COST度量值
+```
+Router(config-router)# auto-cost reference-bandwidth <defautl_100_Mbps>
+R1(config)# interface g0/0/1
+R1(config-if)# ip ospf cost 30
+R1(config-if)# interface lo0
+R1(config-if)# ip ospf cost 10
+R1# show ip route ospf
+```
+
+### 2.4.7 Hello封包間隔
+乙太網路 : hello 10s, dead 40s
+鄰居之間要有相同的hello參數
+修改hello封包間隔, dead = time x 4
+```
+R1(config)# interface g0/0/0
+R1(config-if)# ip ospf hello-interval 5
+R1(config-if)# ip ospf dead-interval 20
+
+modify immediatety
+```
+
+### 2.5 OSPFv2(IPv4)傳播預設靜態路由
+邊際路由設定
+1. 手動設定靜態預設路由
+2. 透過OSPF宣告
+
+```
+R2(config)# ip route 0.0.0.0 0.0.0.0 s0.0.0
+R2(config)# router ospf 1
+R2(config-router)# default-information originate
+
+檢查
+R2# show ip route 
+S*   0.0.0.0/0 is directly connected, Serial0/1/0
+R1# show ip route 
+O*E2 0.0.0.0/0 [110/1] via 172.16.3.2, 00:01:46, Serial0/0/0
+```
+
+### 2.6 驗證OSPF
+- 網段不同大小
+- Hello 間隔不同
+- 錯誤設定成被動模式
+- 網路類型不匹配 broadcast,point-to-point.
+
+```
+show ip interface brief
+show ip route
+show ip route ospf
+show ip ospf neighbor
+show ip protocols
+show ip ospf interface brief
+show ip ospf interface g0/0/0
+```
+
 
 
 
