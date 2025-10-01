@@ -9,11 +9,11 @@
 
    **Router**
    * IPv4/mask, IPv6/len
-   * DHCP
-   * SLAAC
-   * DNS
+   * DHCP : 無狀態SLAAC
+   * DNS 
    * WLC : security, WPA2 personal / enterprise
    * SNMP AND RADIUS
+   * OSPF 
 
 # Windows
    * Windows NTFS, 共享權限
@@ -34,8 +34,10 @@
    * 配線箱
    * DJ箱
    * 保安器
+
 # security 網路安全
    * 公開平台CVE、TWCERT
    * AAA
    * ISO 文件化管理
+   * 封包分析
 

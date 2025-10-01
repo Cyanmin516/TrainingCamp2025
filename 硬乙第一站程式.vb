@@ -5,7 +5,7 @@ Public Class Form1
         gi = 0
     End Sub
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        colorL = 0
+        colorL = 1 '0 make auto run red LEDs
         ri = 0
     End Sub
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
@@ -29,8 +29,7 @@ Public Class Form1
                   &H10, &H20, &H40, &H80,
                   &HC0, &HE0, &HF0, &HF8,
                   &HFC, &HFE, &HFF, 0}
-        redQ = {&HF0, &HF, &H1, &H2,
-                &H3, &H4, &H5, &H6, 0}
+        redQ = {1, 2, 4, 8, 16, 32, 64, 128, 0}
         Dim s = ShapeContainer1.Shapes
         If SP1.IsOpen Then
             Label1.Text = "Current time : " + TimeString
@@ -42,7 +41,7 @@ Public Class Form1
             For i = 0 To 10 ^ 7 'wait ic working
             Next
 
-            If colorL = 0 And redQ(ri) > 0 Then
+            If colorL = 1 And redQ(ri) > 0 Then
                 SP1.Write("R" & redQ(ri))
                 Display(redQ(ri))
                 ri += 1
@@ -65,7 +64,7 @@ Public Class Form1
     Private Sub Display(ByVal no)
         Dim s = ShapeContainer1.Shapes
         For i = 0 To 7
-            If no Mod 2 And colorL = 0 Then s(i).fillcolor = Color.Red
+            If no Mod 2 And colorL = 1 Then s(i).fillcolor = Color.Red
             If no Mod 2 And colorL = 8 Then s(i + 8).fillcolor = Color.GreenYellow
             no \= 2
         Next
