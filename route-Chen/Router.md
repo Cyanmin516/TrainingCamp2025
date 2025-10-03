@@ -343,6 +343,48 @@ show ip ospf interface g0/0/0
 ```
 
 
+## ACL 語法
+```sh
+設定 ACL 規則
+Router(config)# access-list access-list-number {deny | permit | remark text} source [source-wildcard] [log]
+接受或拒絕，remark用來記錄訊息方便維護沒有功能
 
+設定介面
+Router(config-if) # ip access-group {access-list-number | access-list-name} {in | out}
+
+do show access-list
+show ip interface s0/0/0 | include access list
+
+介面設定ACL規則
+interface g0/0
+ip access-group 20 in                                                        
+
+
+ip access standard LAN2-FILTER
+R(cdf-std-nacl)# ip access-group LAN2-FILTER out         
+
+show running-config
+show access-lists
+
+```
+
+### 5.3.4保護連接埠
+```sh
+設定帳戶
+R1(config)#username ADMIN secret class
+設定原則
+R1(config)#ip access-list standard ADMIN-HOST
+R1(config-std-nacl)#permit host 192.168.10.10
+R1(config-std-nacl)#deny any
+R1(config-std-nacl)#exit
+設定遠端
+R1(config)#line vty 0 4
+R1(config-line)#login local
+R1(config-line)#transport input telnet
+設定遠端存取源則
+R1(config-line)#access-class ADMIN-HOST in
+檢查
+R1#show access-lists
+```
 
 
