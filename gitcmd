@@ -59,3 +59,15 @@ git checkout --ours <file>   # 保留 main 的版本
 git checkout --theirs <file> # 接受 branch 的版本（可能是刪除）
 #找不到
 
+
+
+#main 提取 branch commit files
+git checkout main
+git log route-Chen
+git cherry-pick 21bf9456d5b6cbb94fa436e0d4a438c9851b187c
+
+解決衝突： 打開有衝突的檔案，手動編輯並選擇要保留的內容。
+標記解決： 執行 git add . 來將解決後的檔案加入暫存區。
+完成 cherry-pick： 執行 git cherry-pick --continue 來完成操作。
+取消操作 (如果需要)： 如果您決定不要這個 commit 了，可以執行 git cherry-pick --abort 來取消整個操作。
+git commit -m "cherry-pick route-Chen {A, b}"
