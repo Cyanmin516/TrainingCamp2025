@@ -9,6 +9,7 @@ Linux Servies
 7. programing-php
 8. phpmyadmin
 9. wordpress
+<<<<<<< HEAD
 10. sFTP
 11. firewall
 
@@ -26,6 +27,9 @@ new_user_name  ALL=(ALL:ALL) ALL
 ###
 sudo passwd root
 ```
+=======
+10. mail
+>>>>>>> 8c0494c (linux postfix and dovecot)
 
 ## 1. sample of IP
 ```bash
@@ -35,7 +39,51 @@ ip route show
 ip route add default via {IP} dev {ens}
 ```
 
-## 2
+## 2 FTP
+```sh
+root# dnf install vsftpd
+
+停止抓取extras-common
+grep extras-common /etc/yum.repo.d/*
+vim /etc/yum.repo.d/centos-addons.repo
+###IN vim
+[extras-common]
+enable=0
+###
+
+多安裝幾次，拿到全部安裝
+vim /etc/vsftpd/vsftpd.conf
+###IN vim
+啟動下列服務，刪除#註解
+xferlog_file=/var/log/xferlog
+idle_session_timeout=600
+data_connection_timeout=120
+###
+
+systemctl enable --now vsftpd
+sftp user@localhost
+dnf ftp
+ftp IP
+###IN ftp
+[yes/footprint]
+ftp> anomyous
+password: [email@formate]
+ls
+exit
+###
+
+設定防火牆並永遠允許
+firewall-cmd --add-service=ftp
+firewall-cmd --add-service=fip --permanent
+
+UPLOAD
+ftp> put file-path server-path
+DOWNLOAD
+ftp> get file-path your-path
+```
+
+ftp : 21-port 控制, 20-port 資料傳輸
+
 
 
 ## 3. sample of DNS
@@ -219,6 +267,7 @@ phpMyAdmin 登入
 新增 權限 user 
 新增 資料庫 wordpress / utf8-general-ci
 
+<<<<<<< HEAD
 
 
 ## 10. FTP
@@ -311,3 +360,122 @@ cat /usr/lib/firewalld/services/smtp.xml
 這就允許外部的郵件伺服器能夠連線到你主機的通訊埠 25，與 `postfix` 進行溝通，從而發送或接收郵件。
 
 總結來說，`postfix` 和 `firewall-cmd` 是**兩個獨立的元件**，它們之間沒有直接的「認知」關係。`postfix` 只是碰巧使用 `firewalld` 已經預先定義好的 `smtp` 服務所對應的通訊埠。`firewalld` 是一個通用的工具，它定義了許多常見的服務，讓管理員可以透過服務名稱來操作防火牆，而無需記住每個服務的具體通訊埠號碼。
+=======
+## 10 mail
+情境
+user1-mailserver1-mailserver2-user2
+協定
+user1-`SMTP`-`SMTP`-mailserver2-`POP3/IMAP`-user2
+
+user2-`SMTP`-`SMTP`-mailserver1-`POP3/IMAP`-user1
+
+```bash
+root#
+搜尋安裝
+dnf search postfix
+dnf install postfix
+設定
+vim /etc/postfix/main.cf
+#in vim
+hostname= mail.studnet103.example.com
+mydomain= student103.example.com
+myorigin= $mydomain
+inet_interfaces=all
+inet_protocols =all
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+mynetworks _style = class
+mynetworks = 10.10.53.0/24, 127.0.0.0/8
+home_mailbox = Maildir/
+#end vim
+第一次啟動
+system enable --now postfix
+更新設定後重啟
+system restart postfix
+system stop postfix
+system start postfix
+防火牆
+firewall-cmd --add-service=smtp
+firewall-cmd --add-service=smtp --permanent
+測試
+telnet 127.0.0.1 25
+設定網域
+vim /var/named/student.zone
+
+#in vim
+新增
+@ IN MX 10 mail.student103.example.com.
+郵件轉送MX優先度10透過網站
+
+設定DNS網站對應IP
+mail.student30.example.com. IN A 10.10.53.103
+#end vim
+
+mail -s "test" manger@mail.student103.example.com
+#IN mail
+your messages
+ctrl+D to quit
+#
+mailq
+cat /var/log/maillog
+
+su manger
+cd Maildir/
+cd new
+ls
+cat mail-ID
+```
+
+### 收信箱
+dovecot
+```bash
+dnf install dovecot
+
+vim /etc/dovecot/dovecot.conf
+#IN VIM
+listen=: *, ::
+#
+
+vim /etc/dovecot/conf.d/10-auth.conf
+#IN VIM
+line 10 : diable_plaintext_auth = no
+line 100: auth_mechanisms = plain login
+#
+
+vim /etc/dovecot/conf.d/10-mail.conf
+#IN VIM
+mail_location = maildir:~/Maildir
+#
+
+vim /etc/dovecot/conf.d/10-master.conf
+#in vim
+line 107: 
+    #postfix smtp-auth
+unix_listener /var/spool/postfix/private/auth {
+    mode = 0666
+    user = postfix
+    group = postfix
+}
+#
+
+vim /etc/dovecot/conf.d/10-ssl.conf
+#IN VIM
+ssl = yes
+#
+
+firewall-cmd --add-service={imap,pop3,imaps,pop3s}
+firewall-cmd --add-service={imap,pop3,imaps,pop3s} --permanent
+
+systemctl enable --now dovecot
+```
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 8c0494c (linux postfix and dovecot)
