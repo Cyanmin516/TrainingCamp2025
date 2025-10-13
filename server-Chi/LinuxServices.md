@@ -1,13 +1,14 @@
 Linux Servies
 0. root
 1. IP
-2. FTP
-3. DNS
-4. 套件管理
-5. Database
-6. web server
+2. *FTP
+3. *DNS
+4. ***套件管理
+5. *Database
+6. *web server
 7. programing-php
 8. phpmyadmin
+<<<<<<< HEAD
 9. wordpress
 <<<<<<< HEAD
 10. sFTP
@@ -28,8 +29,31 @@ new_user_name  ALL=(ALL:ALL) ALL
 sudo passwd root
 ```
 =======
+=======
+9. *wordpress
+>>>>>>> e97a30e (final exam)
 10. mail
 >>>>>>> 8c0494c (linux postfix and dovecot)
+
+## 資源指令
+```bash
+硬體空閒、shm約全部1/5快取
+df -h
+資料夾大小
+du -sh /path
+網路
+ip a
+ping 
+traceroute
+記憶體
+free -h
+運算CPU
+uptime
+分享權限(user:group:others)(111=rwx)
+chown 755
+```
+
+
 
 ## 1. sample of IP
 ```bash
@@ -38,6 +62,8 @@ ip addr add {IP} dev {ens}
 ip route show
 ip route add default via {IP} dev {ens}
 ```
+
+
 
 ## 2 FTP
 ```sh
@@ -127,6 +153,7 @@ dig www.student.com.tw
 ```
 
 
+
 ## 4. sample of 套件
 ```bash
 cd /etc/yum.repos.d/
@@ -170,6 +197,7 @@ dnf -y install bind bind-chroot bind-utils
 ```
 
 
+
 ## 5 database
 mariadb
 ```bash
@@ -196,6 +224,7 @@ systemctl enable --now nginx
 ```
 
 
+
 ## 7 Programing
  php
 ```bash
@@ -213,6 +242,7 @@ system restart nginx
 phpinfo();
 >
 ```
+
 
 
 ## 8 phpmyadmin
@@ -267,6 +297,7 @@ phpMyAdmin 登入
 新增 權限 user 
 新增 資料庫 wordpress / utf8-general-ci
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 
@@ -361,6 +392,11 @@ cat /usr/lib/firewalld/services/smtp.xml
 
 總結來說，`postfix` 和 `firewall-cmd` 是**兩個獨立的元件**，它們之間沒有直接的「認知」關係。`postfix` 只是碰巧使用 `firewalld` 已經預先定義好的 `smtp` 服務所對應的通訊埠。`firewalld` 是一個通用的工具，它定義了許多常見的服務，讓管理員可以透過服務名稱來操作防火牆，而無需記住每個服務的具體通訊埠號碼。
 =======
+=======
+
+
+
+>>>>>>> e97a30e (final exam)
 ## 10 mail
 情境
 user1-mailserver1-mailserver2-user2
@@ -467,6 +503,37 @@ firewall-cmd --add-service={imap,pop3,imaps,pop3s} --permanent
 
 systemctl enable --now dovecot
 ```
+
+### SMTP
+修改postfix，dovecot管帳，設定轉發規則
+
+vim /etc/postfix/main.cf
+```bash
+disable_vrfy_command = yes
+#來源
+smtpd_helo_required = yes
+#10 MB限制
+message_size_limit = 10240000
+#
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_security_options = noanonymous
+smtpd_sasl_local_domain = $myhostname
+smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+
+smtpd_client_restrictions = permit_mynetworks, reject_unknown_client_hostname, permit
+smtpd_sender_restrictions = permit_mynetworks, reject_unknown_sender_domain, reject_non_fqdn_sender
+smtpd_helo_restrictions = permit_mynetworks, reject_unknown_hostname, reject_non_fqdn_hostname, reject_invalid_hostname, permit
+:wq
+#end vim
+
+
+systemctl restart postfix 
+systemctl status postfix
+```
+
+
 
 
 

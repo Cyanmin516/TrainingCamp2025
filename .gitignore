@@ -4,8 +4,13 @@ else/*
 #setting cfg
 envTest-Li/CCNA/*
 
+<<<<<<< HEAD
 #testfile
 test.md
+=======
+#server-Chi
+Finalexam.md
+>>>>>>> e97a30e (final exam)
 
 
 
