@@ -1,20 +1,17 @@
 Linux Servies
 0. root
 1. IP
-2. *FTP
-3. *DNS
-4. ***套件管理
-5. *Database
-6. *web server
-7. programing-php
-8. phpmyadmin
-<<<<<<< HEAD
-9. wordpress
-<<<<<<< HEAD
-10. sFTP
-11. firewall
+2. FTP
+3. DNS
+4. 套件管理
+5. Database
+6. web server
+7. PHP and PHPmyAdmin
+8. wordpress
+9. firewall
+10. mail
 
-## 0. root
+## 0 root
 ```bash
 sudo adduser new_user_name
 For Ubuntu/Debian:
@@ -28,17 +25,13 @@ new_user_name  ALL=(ALL:ALL) ALL
 ###
 sudo passwd root
 ```
-=======
-=======
-9. *wordpress
->>>>>>> e97a30e (final exam)
-10. mail
->>>>>>> 8c0494c (linux postfix and dovecot)
+
+
 
 ## 資源指令
 ```bash
-硬體空閒、shm約全部1/5快取
-df -h
+硬體空閒、shm約全部1/5
+df -h 
 資料夾大小
 du -sh /path
 網路
@@ -50,12 +43,12 @@ free -h
 運算CPU
 uptime
 分享權限(user:group:others)(111=rwx)
-chown 755
+chown 755 
 ```
 
 
 
-## 1. sample of IP
+## 1 IP
 ```bash
 ifconfig
 ip addr add {IP} dev {ens}
@@ -67,7 +60,7 @@ ip route add default via {IP} dev {ens}
 
 ## 2 FTP
 ```sh
-root# dnf install vsftpd
+dnf install vsftpd
 
 停止抓取extras-common
 grep extras-common /etc/yum.repo.d/*
@@ -112,8 +105,9 @@ ftp : 21-port 控制, 20-port 資料傳輸
 
 
 
-## 3. sample of DNS
+## 3 DNS
 ```bash
+dnf install bind bind-chroot bind-utils
 #vim /etc/named.conf
 listen-on port 53 {`ip;` 127.0.0.1;};
 註解IPv6, `//listen-on-v6`
@@ -122,14 +116,15 @@ incldue "/etc/named/student.conf"; #las line
 :wq
 
 #vim /etc/named/student.conf
-zone "studentX.example.com" IN{
+zone "studentXX.example.com" IN{
     type master;
     file "/var/named/student.zone";
 };
 
-#vim /var/named/student.zone 
+vim /var/named/student.zone 
+#VIM
 $TTL 10
-@   IN SOA dns.studentX.example.com. root ( ;註解用分號 @為本地 dns最後要加.
+@   IN SOA dns.studentXX.example.com. root ( ;註解用分號 @為本地 dns最後要加.
     2025001 ;serial number
     1H 
     2D ;try again backoff
@@ -137,24 +132,34 @@ $TTL 10
     10 ;life time
 )
 
-@   IN NS dns.studentX.com.
+@   IN NS dns.studentXX.com.
+@   IN MX 10 mail.studentXX.com.
 
+dns IN A 10.10.1.1
+www IN A 10.10.1.1
+ftp IN A 10.10.1.1
+mail.studentXX.example.com. IN A 10.10.1.1
+#
 
 systemctl enable --now named
 firewall-cmd --add-service=dns
 firewall-cmd --add-service=dns --permanent
 
-#vim /etc/resolv.conf
-search student103.example.com
-nameserver 10.10.53.103
-nameserver 10.10.2.8
+vim /etc/resolv.conf
+#VIM
+search studentXX.example.com
+nameserver 10.10.1.1
+nameserver 10.10.2.1
+#
 
+測試
 dig www.student.com.tw
+
 ```
 
 
 
-## 4. sample of 套件
+## 4 套件
 ```bash
 cd /etc/yum.repos.d/
 vim centos.repo
@@ -201,6 +206,8 @@ dnf -y install bind bind-chroot bind-utils
 ## 5 database
 mariadb
 ```bash
+dnf module enable mariadb:10.11
+dnf module install mariadb
 dnf install mariadb mariadb-server
 systemctl enable --now mariadb
 mysql_secure_installation
@@ -210,6 +217,13 @@ firewall-cmd --add-service=mysql
 firewall-cmd --add-service=mysql --permanent
 systemctl enable --now mariadb
 ```
+
+### mysql 更改密碼
+```sh
+mysql -u root -p
+ALTER USER 'root'@'localhost' IDENTIFIED BY '新密碼';
+```
+
 
 ## 6 web server
 HTTP server
@@ -225,8 +239,8 @@ systemctl enable --now nginx
 
 
 
-## 7 Programing
- php
+## 7 PHP and PHPmyAdmin
+### php
 ```bash
 dnf module list php
 指定版本
@@ -240,12 +254,9 @@ system restart nginx
 ```php
 <?php
 phpinfo();
->
-```
-
-
-
-## 8 phpmyadmin
+?>
+``` 
+###  phpmyadmin
 phpmyadmin
 management mysql and mariadb
 ```bash
@@ -258,7 +269,7 @@ mv phpMyAdmin-5.2.2-all-languages phpMyAdmin
 dnf install php-mysqlnd php-pdo
 cp phpMyAdmin/config.sample.inc.php phpMyAdmin/config.inc.php
 vim phpMyAdmin/config.inc.php
-###
+###每次改密碼都要重新設定這個雜湊HASH
 $cfg['blowfish_secret'] = 'any string u can write in'; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
 ###
 重啟
@@ -268,17 +279,18 @@ systemctl restart nginx
 restorecon -Rvv phpMyAdmin
 ```
 
+**phpMyAdmin 登入**
+- 新增 資料庫 wordpress / utf8-general-ci
+- (wordpress database)新增 權限 user 
+- username/userpassword/hostname/
+- only wordpress database privillege
+- apply
 
 
-## 9 wordpress
+
+
+##  8 wordpress
 ```bash
-dnf module list mariadb
-systemctl stop mariadb
-dnf remove mariadb-*
-dnf module enable mariadb:10.11
-dnf module install mariadb
-systemctl enable --now mariadb
-mysql_secure_install
 mv /home/manager/下載wordpress-6.8.2-zh_TW.zip /usr/share/nginx/html/
 cd /usr/share/nginx/html/
 unzip wordpress-6.8.2-zh_TW.zip
@@ -288,7 +300,7 @@ vim wp-config.php
 ###
 define('DB_NAME','wordpress' );
 define('DB_USER','wordpress' );
-define('DB_PASSWORD','WordPress@website103' );
+define('DB_PASSWORD','WordPressPassword' );
 ###
 restorecon -Rvv .
 ```
@@ -296,63 +308,13 @@ restorecon -Rvv .
 phpMyAdmin 登入
 新增 權限 user 
 新增 資料庫 wordpress / utf8-general-ci
-
-<<<<<<< HEAD
-<<<<<<< HEAD
+ 
 
 
-## 10. FTP
-1. 查詢軟體 : vftp
-2. 安裝軟體
-3. 服務設定 : 
-4. 啟動服務 : systemctl enable --now
-6. 防火牆設定 : firewall-cmd
-5. 測試 : 
-
-```bash
-root# dnf install vsftpd
-
-停止抓取extras-common
-grep extras-common /etc/yum.repo.d/*
-vim /etc/yum.repo.d/centos-addons.repo
-###
-[extras-common]
-enable=0
-###
-
-多安裝幾次，拿到全部安裝
-vim /etc/vsftpd/vsftpd.conf
-###
-啟動下列服務，刪除#註解
-xferlog_file=/var/log/xferlog
-idle_session_timeout=600
-data_connection_timeout=120
-###
-
-systemctl enable --now vsftpd
-
-sftp user@localhost
-dnf ftp
-ftp IP
-###
-[yes/footprint]
-ftp> anomyous
-password: [email@formate]
-ls
-exit
-###
-
-firewall-cmd --add-service=ftp
-firewall-cmd --add-service=fip --permanent
-
-UPLOAD
-ftp> put file-path server-path
-DOWNLOAD
-ftp> get file-path your-path
-```
 
 
-## 11. Firewall
+## 9. Firewall
+
 `firewalld` 是一個動態防火牆管理工具，它將常見的網路服務和它們使用的通訊埠（port）預先定義為「服務」。這樣做的好處是，使用者不需要記憶每一個服務所對應的通訊埠號碼。
 
 當你執行 `firewall-cmd --add-service=smtp` 時，`firewalld` 會在它的設定中查找 `smtp` 這個服務。`firewalld` 的服務定義檔通常位於 `/usr/lib/firewalld/services/` 或 `/etc/firewalld/services/` 目錄。
@@ -391,19 +353,14 @@ cat /usr/lib/firewalld/services/smtp.xml
 這就允許外部的郵件伺服器能夠連線到你主機的通訊埠 25，與 `postfix` 進行溝通，從而發送或接收郵件。
 
 總結來說，`postfix` 和 `firewall-cmd` 是**兩個獨立的元件**，它們之間沒有直接的「認知」關係。`postfix` 只是碰巧使用 `firewalld` 已經預先定義好的 `smtp` 服務所對應的通訊埠。`firewalld` 是一個通用的工具，它定義了許多常見的服務，讓管理員可以透過服務名稱來操作防火牆，而無需記住每個服務的具體通訊埠號碼。
-=======
-=======
-
-
-
->>>>>>> e97a30e (final exam)
+ 
 ## 10 mail
 情境
-user1-mailserver1-mailserver2-user2
-協定
-user1-`SMTP`-`SMTP`-mailserver2-`POP3/IMAP`-user2
-
-user2-`SMTP`-`SMTP`-mailserver1-`POP3/IMAP`-user1
+| 角色 | user1 | mailserver1 | mailserver2 | user2 |
+|:-|:-|:-|:-|:-|
+| 送信者  | 協定  | 目的server  | 協定       | 收信者  |
+| user1 | `SMTP` | mailserver2 | `POP3/IMAP` | user2 |
+| user2 | `SMTP` | mailserver1 | `POP3/IMAP` | user1 |
 
 ```bash
 root#
@@ -413,14 +370,14 @@ dnf install postfix
 設定
 vim /etc/postfix/main.cf
 #in vim
-hostname= mail.studnet103.example.com
-mydomain= student103.example.com
+hostname= mail.studentXX.example.com
+mydomain= studentXX.example.com
 myorigin= $mydomain
 inet_interfaces=all
 inet_protocols =all
 mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 mynetworks _style = class
-mynetworks = 10.10.53.0/24, 127.0.0.0/8
+mynetworks = 10.10.1.0/24, 127.0.0.0/8
 home_mailbox = Maildir/
 #end vim
 第一次啟動
@@ -437,16 +394,16 @@ telnet 127.0.0.1 25
 設定網域
 vim /var/named/student.zone
 
-#in vim
+#IN VIM
 新增
-@ IN MX 10 mail.student103.example.com.
+@ IN MX 10 mail.studentXX.example.com.
 郵件轉送MX優先度10透過網站
 
 設定DNS網站對應IP
-mail.student30.example.com. IN A 10.10.53.103
-#end vim
+mail.student30.example.com. IN A 10.10.1.1
+#
 
-mail -s "test" manger@mail.student103.example.com
+mail -s "test" manger@mail.studentXX.example.com
 #IN mail
 your messages
 ctrl+D to quit
@@ -514,24 +471,22 @@ disable_vrfy_command = yes
 smtpd_helo_required = yes
 #10 MB限制
 message_size_limit = 10240000
-#
+
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_security_options = noanonymous
 smtpd_sasl_local_domain = $myhostname
 smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
-
 smtpd_client_restrictions = permit_mynetworks, reject_unknown_client_hostname, permit
 smtpd_sender_restrictions = permit_mynetworks, reject_unknown_sender_domain, reject_non_fqdn_sender
 smtpd_helo_restrictions = permit_mynetworks, reject_unknown_hostname, reject_non_fqdn_hostname, reject_invalid_hostname, permit
 :wq
 #end vim
 
-
 systemctl restart postfix 
 systemctl status postfix
-```
+``` 
 
 
 
@@ -543,6 +498,4 @@ systemctl status postfix
 
 
 
-
-
->>>>>>> 8c0494c (linux postfix and dovecot)
+ 
