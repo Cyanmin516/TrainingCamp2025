@@ -132,12 +132,11 @@ $TTL 10
     10 ;life time
 )
 
-@   IN NS dns.studentXX.com.
-@   IN MX 10 mail.studentXX.com.
+@   IN NS dns.studentXX.example.com.
+@   IN MX 10 mail.studentXX.example.com.
 
 dns IN A 10.10.1.1
-www IN A 10.10.1.1
-ftp IN A 10.10.1.1
+www IN A 10.10.1.1 
 mail.studentXX.example.com. IN A 10.10.1.1
 #
 
@@ -195,6 +194,8 @@ vim epel-cisco-openh264.repo
 enable=0
 ### END VIM
 
+
+重新測試
 dnf clean all
 yum clean all
 #redo install
@@ -209,13 +210,13 @@ mariadb
 dnf module enable mariadb:10.11
 dnf module install mariadb
 dnf install mariadb mariadb-server
-systemctl enable --now mariadb
 mysql_secure_installation
-mysql -u root -p -h localhost
-
 firewall-cmd --add-service=mysql
 firewall-cmd --add-service=mysql --permanent
 systemctl enable --now mariadb
+測試
+mysql -u root -p -h localhost
+MariaDB> exit
 ```
 
 ### mysql 更改密碼

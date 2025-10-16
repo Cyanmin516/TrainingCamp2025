@@ -1,16 +1,16 @@
+#Cisco packet tracer samples 
+route-Chen/cisco/*
+
+
 #pdf file and misc
 else/*
+
+#testfile
+test.md
 
 #setting cfg
 envTest-Li/CCNA/*
 
-<<<<<<< HEAD
-#testfile
-test.md
-=======
-#server-Chi
-Finalexam.md
->>>>>>> e97a30e (final exam)
 
 
 
