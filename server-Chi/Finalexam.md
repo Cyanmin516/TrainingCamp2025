@@ -104,6 +104,7 @@ firewall-cmd --add-service=mysql --permanent
 
 systemctl enable --now mariadb 
 
+```
 mysql_secure_installation
 
 `Rootpassword`
@@ -129,7 +130,7 @@ mysql_secure_installation
 mysql -u root -p -h localhost
 
 MariaDB> exit
-
+```
 
 ## nginx
 
@@ -137,11 +138,11 @@ dnf module enable nginx:1.26 -y
 
 dnf install nginx -y
 
-systemctl enable --now nginx
-
 firewall-cmd --add-service=http
 
 firewall-cmd --add-service=http --permanent
+
+systemctl enable --now nginx
 
 ## php
 
@@ -198,6 +199,12 @@ systemctl restart nginx
 www.studentXX.example.com/phpMyAdmin
 
 登入後可以新增使用者
+
+## phpmyadmin install by dnf
+dnf install epel-relase
+dnf install phphmyadmin
+/usr/share/phpMyAdmin
+
  
 ## wordpress
 google搜尋wordpress 下載
@@ -258,13 +265,14 @@ dbadmin.studentXX.example.com
 
 依據wp-config.php設定
 
-使用者=username
+使用者= <username>
 
-密碼=userpassword
+密碼= <userpassword>
 
-資料庫=本機localhost
+資料庫=<本機><localhost>
 
-執行，在最底部
+**執行**，在最底部
+
 
 **wordpress**
 www.studentXX.example.com
