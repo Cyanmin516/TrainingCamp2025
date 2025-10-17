@@ -61,7 +61,7 @@ vim /var/named/student.zone
          10
  )
  
- @ IN NS dns.studentXX.example.com
+ @ IN NS dns.studentXX.example.com.
  
  dns IN A 192.168.58.1
  www IN A 192.168.58.1
@@ -106,16 +106,22 @@ systemctl enable --now mariadb
 
 mysql_secure_installation
 
-[Rootpassword]
-`y`
+`Rootpassword`
+
 `y`
 
-[mysqlPassword]
+`y`
 
-[mysqlPassword]
+`mysqlPassword`
+
+`mysqlPassword`
+
 `y`
+
 `y`
+
 `y`
+
 `y`
 
 測試
