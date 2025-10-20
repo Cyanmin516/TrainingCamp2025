@@ -1,50 +1,52 @@
-# Final exam
-建立虛擬機
-完成服務
+建置Linux服務快速版本
+last edit day1020 time1611
 
-DNS, web, database
+善用記事本>編輯>取代>全部取代
+Linux Ctrl+shirt+V貼上
+改前另存新檔test.txt，可以剪下指令操作
 
-系統: linux centOS
-模擬器: VMware workstation pro 17
-網路設定: bridge
+IP(要改)===========
+192.168.140.100
+Network(要改)======
+192.168.140.0/24
+Domain(要改)=======
+passwordleak.com
 
-指令
+下面設定設mariadb    帳號root密碼(要改)Linuxroot
+下面設定設phpMyAdmin 帳號root密碼(要改)rootdbadmin
+下面設定設wordpress  帳號(要改)wordpressu密碼(要改)wordpressp
 
-## 0 環境設定
-- 網路
-    - 橋接網路 : 手動設定ip/gateway/dns
-    - NAT網路  : ip address 記下網路IP
 
-- 設定root
-```
-sudo passwd root
-[rootpassword]
+#1. 設定與下載確認下載完畢
 su -
-[rootpassword]
-```
-- 設定vim
-```
-vim ~/.vimrc
-set number
-set statusline=%F
-```
+Linuxroot
+dnf install bind bind-chroot bind-utils mariadb mariadb-server php-mysqlnd php-pdo php php php-fpm nginx vsftpd -y 
+
+#確認全部安裝
+#確認全部安裝
+#確認全部安裝，重複步驟一
+
+#防火牆
+firewall-cmd --add-service={dns,http,mysql}
+firewall-cmd --add-service={dns,http,mysql} --permanent
 
 
-## DNS
-
-dnf install bind bind-chroot bind-utils
+#2. DNS 
 
 vim /etc/named.conf
-
-listen-on port 53 { `192.168.58.1;` 127.0.0.1; };
-
-allow-query     { `192.168.58.0;` localhost; };
-
-`include "/etc/named/student.conf";`
+```
+#更改部分參數，右下角 11,9代表行列，看左邊的數字
+#修改第11行 IP
+listen-on port 53 { 192.168.140.100; 127.0.0.1; };
+#修改第19行 Network
+allow-query     { 192.168.140.0/24/24; localhost; };
+#新增第59行
+include "/etc/named/student.conf";
+```
 
 vim /etc/named/student.conf
 ```
-zone "studentXX.example.com" IN{
+zone "passwordleak.com" IN{
     type master;
     file "/var/named/student.zone";
 };
@@ -52,103 +54,36 @@ zone "studentXX.example.com" IN{
 
 vim /var/named/student.zone
 ```
- $TTL 10
- @ IN SOA dns.studentXX.example.com. root(
-         2025100101 ;serial YYYYMMDDnn
+$TTL 10
+@ IN SOA dns.passwordleak.com. root (
+         2025102001 ;serial YYYYMMDDnn
          1H
          2D
          3W
          10
- )
+)
  
- @ IN NS dns.studentXX.example.com.
- 
- dns IN A 192.168.58.1
- www IN A 192.168.58.1
- dbadmin IN A 192.168.58.1
+@ IN NS dns.passwordleak.com.
+dns IN A 192.168.140.100
+www IN A 192.168.140.100
+dbadmin IN A 192.168.140.100
 ```
 
 vim /etc/resolv.conf
 ```
-最前面插入
-search studentXX.example.com
-nameserver 192.168.58.1
+#最前面插入
+search passwordleak.com
+nameserver 192.168.140.100
 ```
-
-firewall-cmd --add-service=dns 
-
-firewall-cmd --add-service=dns --permanent
-
 systemctl enable --now named
 
-測試
+#3. Database
 
-dig www.studentXX.example.com
+systemctl enable --now mariadb
 
-得到
-
-;; ANSWER SECTION:
-
-www.studentXX.example.com.	10	IN	A	192.168.58.1
-
-
-## Mariadb
-
-dnf module enable mariadb:10.11 -y
-
-dnf install mariadb mariadb-server
-
-firewall-cmd --add-service=mysql 
-
-firewall-cmd --add-service=mysql --permanent
-
-systemctl enable --now mariadb 
-
-```
-mysql_secure_installation
-
-`Rootpassword`
-
-`y`
-
-`y`
-
-`mysqlPassword`
-
-`mysqlPassword`
-
-`y`
-
-`y`
-
-`y`
-
-`y`
-
-測試
-
-mysql -u root -p -h localhost
-
-MariaDB> exit
-```
-
-## nginx
-
-dnf module enable nginx:1.26 -y
-
-dnf install nginx -y
-
-firewall-cmd --add-service=http
-
-firewall-cmd --add-service=http --permanent
-
+#4. nginx and php
+systemctl enable --now php-fpm
 systemctl enable --now nginx
-
-## php
-
-dnf module enable php:8.3 -y
-
-dnf install php php-fpm -y
 
 vim /usr/share/nginx/html/index.php
 ```php
@@ -156,81 +91,68 @@ vim /usr/share/nginx/html/index.php
 phpinfo();
 ?>
 ```
-systemctl enable --now php-fpm
-
 systemctl restart nginx
 
-
-## phpMyAdmin
-
-下載
-
-google搜尋phpmyadmin
-
-download from website and manual set 5.2.2
-
-https://www.phpmyadmin.net/files/5.2.2/
-
-dnf install php-mysqlnd php-pdo
-
-移動與重新命名
-
-mv /home/username/下載/phpMyAdmin-5.2.2-all-languages.zip  /usr/share/nginx/html/
-
-cd /usr/share/nginx/html/
-
+#5. phpMyAdmin
+cd /usr/share/nginx/html
+wget https://files.phpmyadmin.net/phpMyAdmin/5.2.2/phpMyAdmin-5.2.2-all-languages.zip /usr/share/nginx/html
 unzip phpMyAdmin-5.2.2-all-languages.zip 
-
 mv phpMyAdmin-5.2.2-all-languages phpMyAdmin
-
 cp phpMyAdmin/config.sample.inc.php  phpMyAdmin/config.inc.php
 
 vim phpMyAdmin/config.inc.php 
 ```
-新增簽證32-位元(可以看右下角 第16列,第60字)
+#更改部分參數
+#新增簽證32-位元(可以看右下角 第16列,第60字)
 $cfg['blowfish_secret'] = 'asdfzxcvasdfqwerjjkl;lkajdsfoi45';
 ```
+
 systemctl restart php-fpm
-
 systemctl restart nginx
- 
-測試
 
-www.studentXX.example.com/phpMyAdmin
+mysql_secure_installation
+```
+Linuxroot
+y
+y
+rootdbadmin
+rootdbadmin
+y
+y
+y
+y
+```
 
-登入後可以新增使用者
+#測試
+mysql -u root -p -h localhost
+rootdbadmin
+MariaDB> exit
 
-## phpmyadmin install by dnf
-dnf install epel-relase
-dnf install phphmyadmin
-/usr/share/phpMyAdmin
+systemctl restart mariadb
 
- 
-## wordpress
-google搜尋wordpress 下載
+#6. wordpress
+cd /usr/share/nginx/html
+wget https://tw.wordpress.org/latest-zh_TW.zip /usr/share/nginx/html
+unzip /usr/share/nginx/html/latest-zh_TW.zip
+mv wordpress/wp-config-sample.php wordpress/wp-config.php
 
-下載6.8.3
-
-mv /home/a/下載/wordpress-6.8.3-zh_TW.zip /usr/share/nginx/html/
-
-unzip /usr/share/nginx/html/wordpress-6.8.3-zh_TW.zip 
-
-cd /usr/share/nginx/html/wordpress
-
-cp wp-config-sample.php wp-config.php
 
 vim wordpress/wp-config.php
 ```
+#更改部分參數
+#修改第23行
 define( 'DB_NAME', 'wordpress' );
-define( 'DB_USER', 'wordpress' );
-define( 'DB_PASSWORD', 'Wordpassword' );
+#修改第26行
+define( 'DB_USER', 'wordpressu' );
+#修改第29行
+define( 'DB_PASSWORD', 'wordpressp' );
 ```
 
 vim /etc/nginx/conf.d/wp.conf
 ```
 server {
     listen 80;
-    server_name www.studentXX.example.com;
+    server_name www.passwordleak.com;
     root /usr/share/nginx/html/wordpress;
 
     error_log /var/log/nginx/wp_error.log;
@@ -242,62 +164,103 @@ vim /etc/nginx/conf.d/dbadmin.conf
 ```
 server {
     listen 80;
-    server_name dbadmin.studentXX.example.com;
+    server_name dbadmin.passwordleak.com;
     root /usr/share/nginx/html/phpMyAdmin;
 
     error_log /var/log/nginx/db_error.log;
     include /etc/nginx/default.d/*.conf;
 }
 ```
-重啟設定
+#重啟設定
 nginx -t
 nginx -s reload
 
 
-**phpMyAdmin 登入**
-dbadmin.studentXX.example.com
+#網頁phpMyAdmin 登入
+http://dbadmin.passwordleak.com/
+使用者root
+密碼rootdbadmin
+#登入
 
-登入
+http://dbadmin.passwordleak.com/index.php?route=/server/databases
+#資料庫
+建立資料庫 wordpress / utf8-general-ci 建立
+#或者
+建立資料庫 wordpress / utf8mb3-general-ci 建立
 
-新增 資料庫 wordpress / utf8-general-ci
+確認資料庫名稱與編碼後，點擊建立
 
-(wordpress database)新增 權限 新增使用者
 
-依據wp-config.php設定
+http://dbadmin.passwordleak.com/index.php?route=/server/privileges&db=wordpress&checkprivsdb=wordpress&viewing_mode=db
+#(資料庫wordpress ) 權限 
+新增 新增使用者
 
-使用者= <username>
+#依據wp-config.php設定
+使用者名稱= wordpressu
+主機名稱= 本機   localhost
+密碼= wordpressp
+重新輸入= wordpressp
 
-密碼= <userpassword>
-
-資料庫=<本機><localhost>
+全域權限<打勾>
 
 **執行**，在最底部
 
+#成功
+#已新增了新的使用者。 
 
-**wordpress**
-www.studentXX.example.com
+############設定結束
 
-設定下列資料
+#phpMyAdmin網址
+dbadmin.passwordleak.com
 
-標題 `Student`
-
-使用者名稱 `wordpress`
-
-密碼 `Wordpassword`
-
-V確認弱密碼
-
-Email `student@studentXX.example.com`
+#Wordpress網址
+www.passwordleak.com
 
 
 
-### 指定版本
-```bash
-dnf module enable mariadb:10.11 -y
-dnf install mariadb
-dnf install php-mysqlnd php-pdo
-dnf module enable nginx:1.26 -y
-dnf install nginx
-dnf module enable php:8.3 -y
-dnf install php php-fpm
+0. ROOT權限
+sudo passwd
+Linuxroot
+
+su -
+Linuxroot
+
+vim ~/.vimrc
 ```
+set nu
+set statusline=%F
+```
+dnf list installed | egrep 'bind|mariadb|php|nginx'
+ip address 
+ping 8.8.8.8
+
+0.1.2
+測試
+dig www.passwordleak.com
+得到
+;; ANSWER SECTION:
+www.passwordleak.com.	10	IN	A	192.168.140.100
+
+Windows
+C:\Users\user>nslookup www.passwordleak.com
+伺服器:  UnKnown
+Address:  192.168.140.100
+
+名稱:    www.passwordleak.com
+Address:  192.168.140.100
+
+0.1.5
+測試
+dbadmin.passwordleak.com
+登入後可以新增使用者
+
+
+0.6
+網頁wordpress
+www.passwordleak.com
+設定下列資料
+標題 student
+使用者名稱 student07
+密碼 std@dmin
+V確認弱密碼
+Email student@passwordleak.com
