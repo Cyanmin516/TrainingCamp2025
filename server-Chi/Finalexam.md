@@ -1,5 +1,5 @@
 建置Linux服務快速版本
-last edit day1020 time1611
+last edit day1021 time0804
 
 善用記事本>編輯>取代>全部取代
 Linux Ctrl+shirt+V貼上
@@ -39,7 +39,7 @@ vim /etc/named.conf
 #修改第11行 IP
 listen-on port 53 { 192.168.140.100; 127.0.0.1; };
 #修改第19行 Network
-allow-query     { 192.168.140.0/24/24; localhost; };
+allow-query     { 192.168.140.0/24; localhost; };
 #新增第59行
 include "/etc/named/student.conf";
 ```
@@ -231,10 +231,13 @@ set nu
 set statusline=%F
 ```
 dnf list installed | egrep 'bind|mariadb|php|nginx'
+
 ip address 
+192.168.140.100
 ping 8.8.8.8
 
-0.1.2
+
+0.1.2 DNS test
 測試
 dig www.passwordleak.com
 得到
@@ -242,14 +245,14 @@ dig www.passwordleak.com
 www.passwordleak.com.	10	IN	A	192.168.140.100
 
 Windows
-C:\Users\user>nslookup www.passwordleak.com
+nslookup www.passwordleak.com
 伺服器:  UnKnown
 Address:  192.168.140.100
 
 名稱:    www.passwordleak.com
 Address:  192.168.140.100
 
-0.1.5
+0.1.5 
 測試
 dbadmin.passwordleak.com
 登入後可以新增使用者
